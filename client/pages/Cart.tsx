@@ -51,13 +51,6 @@ export default function Cart() {
           <h1 className="font-unbounded font-bold text-[28px] leading-normal tracking-[0.25px] text-foreground">
             CART
           </h1>
-          <div className="w-10 h-10 rounded-full border border-[#373737] overflow-hidden">
-            <img
-              src="https://api.builder.io/api/v1/image/assets/TEMP/14faff47a41c720b383bdcac66f42fc8d590fa40?width=80"
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
-          </div>
         </div>
 
         <div className="space-y-8 mb-8">
