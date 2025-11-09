@@ -1,3 +1,5 @@
+
+
 """
 Multi-Agent Retail Sales System using LangGraph
 EY Techathon 6.0 - Problem Statement 5
@@ -12,7 +14,8 @@ import json
 from datetime import datetime
 import operator
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 # =============================================================================
 # STATE DEFINITION
 # =============================================================================
@@ -64,16 +67,24 @@ def sales_agent_node(state: AgentState) -> AgentState:
     
     Customer Message: "{last_message}"
     
-    Based on this, what should we do next?
-    Options:
-    - recommend: Customer wants product suggestions
-    - inventory: Customer wants to check stock availability
-    - payment: Customer is ready to checkout
-    - loyalty: Customer asks about rewards or discounts
-    - post_purchase: Customer has questions about existing order
-    - end: Conversation is complete
+    Analyze the customer's intent and decide what to do:
     
-    Respond with ONLY the action name.
+    Options:
+    - recommend: Customer wants product suggestions or browsing products
+    - inventory: Customer wants to check if specific product is in stock
+    - payment: Customer explicitly says "buy", "purchase", "checkout" or is ready to pay
+    - loyalty: Customer asks about points, rewards or discounts
+    - post_purchase: Customer asks about tracking, returns, or existing orders
+    - info: Customer asks for information about a product (details, specs, price)
+    - end: Just greeting, thank you, or conversation complete
+    
+    Important rules:
+    1. If customer just asks ABOUT a product (like "tell me about SKU001"), respond with "info"
+    2. Only route to "payment" if customer explicitly wants to BUY
+    3. Only route to "recommend" if customer wants suggestions or is browsing
+    4. If unsure, choose "info"
+    
+    Respond with ONLY ONE action name from the list above.
     """
     
     llm = ChatGoogleGenerativeAI(
@@ -130,7 +141,9 @@ def recommendation_agent_node(state: AgentState) -> AgentState:
             reco_text += "Would you like to check availability or add any to cart?"
             
             state["messages"].append(AIMessage(content=reco_text))
-            state["next_action"] = "inventory"  # Auto-route to inventory check
+            # In demo mode, this will auto-chain to inventory
+            # In interactive mode, graph stops here
+            state["next_action"] = "inventory"
             
         else:
             state["messages"].append(AIMessage(content="I'm having trouble fetching recommendations. Let me try again."))
@@ -181,7 +194,7 @@ def inventory_agent_node(state: AgentState) -> AgentState:
                         msg += f"• {option['type']}: {option['eta']} - ₹{option['cost']}\n"
                 
                 msg += "\n💳 Ready to proceed with payment?"
-                state["next_action"] = "payment"
+                state["next_action"] = "payment"  # Demo mode chains, interactive mode stops
             else:
                 msg = f"😔 Sorry, **{product['name']}** is currently out of stock.\n"
                 msg += f"Expected restock: {inventory.get('restock_date', 'TBD')}\n\n"
@@ -239,7 +252,7 @@ def payment_agent_node(state: AgentState) -> AgentState:
                 msg += f"Transaction ID: {payment_result.get('transaction_id', 'TXN123')}\n\n"
                 msg += "🎁 Checking for loyalty rewards..."
                 
-                state["next_action"] = "loyalty"
+                state["next_action"] = "loyalty"  # Demo mode chains, interactive mode stops
             else:
                 msg = "❌ Payment failed. Please try again or use a different payment method."
                 state["next_action"] = "end"
@@ -329,6 +342,67 @@ def post_purchase_agent_node(state: AgentState) -> AgentState:
     return state
 
 
+def info_agent_node(state: AgentState) -> AgentState:
+    """
+    Provides information about products without going through purchase flow
+    """
+    print("\n📋 INFO AGENT: Looking up product information...")
+    
+    last_message = state["messages"][-1].content if state["messages"] else ""
+    
+    # Extract SKU if mentioned
+    import re
+    sku_match = re.search(r'SKU\d+', last_message, re.IGNORECASE)
+    
+    if sku_match:
+        sku = sku_match.group(0).upper()
+        
+        try:
+            # Get product details
+            response = requests.get(f"{API_BASE}/products", timeout=5)
+            
+            if response.status_code == 200:
+                products = response.json().get("products", [])
+                product = next((p for p in products if p["sku"] == sku), None)
+                
+                if product:
+                    msg = f"**{product['name']}** (SKU: {product['sku']})\n\n"
+                    msg += f"💰 **Price:** ₹{product['price']:,}\n"
+                    msg += f"📦 **Category:** {product['category']}\n"
+                    msg += f"⭐ **Rating:** {product['rating']}/5\n"
+                    msg += f"🏷️ **Brand:** {product['brand']}\n\n"
+                    msg += f"📝 **Description:**\n{product['description']}\n\n"
+                    
+                    # Check inventory
+                    inv_response = requests.get(f"{API_BASE}/inventory/{sku}", timeout=5)
+                    if inv_response.status_code == 200:
+                        inventory = inv_response.json()
+                        if inventory['in_stock']:
+                            msg += f"✅ **In Stock:** {inventory['quantity']} units available\n"
+                            msg += f"📍 **Location:** {inventory['store_location']}\n\n"
+                            msg += "Would you like to purchase this item?"
+                        else:
+                            msg += f"❌ **Out of Stock**\n"
+                            msg += f"Expected restock: {inventory.get('restock_date', 'TBD')}\n\n"
+                            msg += "Would you like to see similar products?"
+                    
+                    state["messages"].append(AIMessage(content=msg))
+                else:
+                    state["messages"].append(AIMessage(content=f"Sorry, I couldn't find product {sku}. Let me show you our available products."))
+                    state["next_action"] = "recommend"
+                    return state
+            
+        except Exception as e:
+            print(f"   ❌ Error: {e}")
+            state["messages"].append(AIMessage(content="I'm having trouble looking up that product. Can you try again?"))
+    else:
+        # No SKU found, general product inquiry
+        state["messages"].append(AIMessage(content="I'd be happy to help you learn about our products! Could you tell me what you're looking for?"))
+    
+    state["next_action"] = "end"
+    return state
+
+
 def end_node(state: AgentState) -> AgentState:
     """
     Graceful conversation ending
@@ -353,6 +427,7 @@ def route_after_sales_agent(state: AgentState) -> str:
         "payment": "payment_agent",
         "loyalty": "loyalty_agent",
         "post_purchase": "post_purchase_agent",
+        "info": "info_agent",
         "end": "end"
     }
     
@@ -363,9 +438,12 @@ def route_after_sales_agent(state: AgentState) -> str:
 # BUILD THE GRAPH
 # =============================================================================
 
-def create_retail_agent_graph():
+def create_retail_agent_graph(mode="interactive"):
     """
     Constructs the LangGraph workflow
+    
+    Args:
+        mode: "interactive" for step-by-step OR "demo" for auto-flow through all agents
     """
     workflow = StateGraph(AgentState)
     
@@ -376,6 +454,7 @@ def create_retail_agent_graph():
     workflow.add_node("payment_agent", payment_agent_node)
     workflow.add_node("loyalty_agent", loyalty_agent_node)
     workflow.add_node("post_purchase_agent", post_purchase_agent_node)
+    workflow.add_node("info_agent", info_agent_node)
     workflow.add_node("end", end_node)
     
     # Define edges
@@ -389,16 +468,28 @@ def create_retail_agent_graph():
             "payment_agent": "payment_agent",
             "loyalty_agent": "loyalty_agent",
             "post_purchase_agent": "post_purchase_agent",
+            "info_agent": "info_agent",
             "end": "end"
         }
     )
     
-    # After each worker agent, return to sales agent for next decision
-    workflow.add_edge("recommendation_agent", "inventory_agent")
-    workflow.add_edge("inventory_agent", "payment_agent")
-    workflow.add_edge("payment_agent", "loyalty_agent")
-    workflow.add_edge("loyalty_agent", "post_purchase_agent")
-    workflow.add_edge("post_purchase_agent", "end")
+    if mode == "demo":
+        # DEMO MODE: Auto-flow through all agents in sequence
+        workflow.add_edge("recommendation_agent", "inventory_agent")
+        workflow.add_edge("inventory_agent", "payment_agent")
+        workflow.add_edge("payment_agent", "loyalty_agent")
+        workflow.add_edge("loyalty_agent", "post_purchase_agent")
+        workflow.add_edge("post_purchase_agent", "end")
+    else:
+        # INTERACTIVE MODE: Each agent stops and returns to user
+        workflow.add_edge("recommendation_agent", "end")
+        workflow.add_edge("inventory_agent", "end")
+        workflow.add_edge("payment_agent", "end")
+        workflow.add_edge("loyalty_agent", "end")
+        workflow.add_edge("post_purchase_agent", "end")
+    
+    # Info agent always goes to end in both modes
+    workflow.add_edge("info_agent", "end")
     workflow.add_edge("end", END)
     
     return workflow.compile()
@@ -410,11 +501,11 @@ def create_retail_agent_graph():
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("🛍️  MULTI-AGENT RETAIL SALES SYSTEM")
+    print("🛍️  MULTI-AGENT RETAIL SALES SYSTEM - DEMO MODE")
     print("=" * 70)
     
-    # Initialize graph
-    app = create_retail_agent_graph()
+    # Initialize graph in DEMO mode (auto-flows through agents)
+    app = create_retail_agent_graph(mode="demo")
     
     # Test conversation
     initial_state = {
@@ -435,16 +526,53 @@ if __name__ == "__main__":
     }
     
     # Run the graph
+    print("\n" + "=" * 70)
+    print("🎬 STARTING DEMO CONVERSATION")
+    print("=" * 70)
+    
     final_state = app.invoke(initial_state)
     
-    # Print conversation history
+    # Print full conversation history with proper formatting
     print("\n" + "=" * 70)
-    print("📝 CONVERSATION TRANSCRIPT")
+    print("📝 COMPLETE CONVERSATION TRANSCRIPT")
     print("=" * 70)
-    for msg in final_state["messages"]:
-        role = "👤 Customer" if isinstance(msg, HumanMessage) else "🤖 Agent"
-        print(f"\n{role}: {msg.content}")
+    
+    agent_response_count = 0
+    for i, msg in enumerate(final_state["messages"], 1):
+        if isinstance(msg, HumanMessage):
+            print(f"\n{'═' * 70}")
+            print(f"👤 CUSTOMER: {final_state.get('user_name', 'Guest')}")
+            print(f"{'═' * 70}")
+            print(f"{msg.content}")
+        elif isinstance(msg, AIMessage):
+            agent_response_count += 1
+            print(f"\n{'─' * 70}")
+            print(f"🤖 AGENT RESPONSE #{agent_response_count}")
+            print(f"{'─' * 70}")
+            print(f"{msg.content}")
+    
+    # Show summary
+    print("\n" + "=" * 70)
+    print("📊 SESSION SUMMARY")
+    print("=" * 70)
+    print(f"Customer: {final_state.get('user_name', 'Unknown')}")
+    print(f"User ID: {final_state.get('user_id', 'Unknown')}")
+    print(f"Location: {final_state.get('location', 'Unknown')}")
+    print(f"Channel: {final_state.get('channel', 'Unknown')}")
+    print(f"Session ID: {final_state.get('session_id', 'Unknown')}")
+    
+    if final_state.get('order_id'):
+        print(f"\n💰 PURCHASE COMPLETED:")
+        print(f"   Order ID: {final_state['order_id']}")
+        if final_state.get('payment_status'):
+            print(f"   Amount: ₹{final_state['payment_status'].get('amount', 0):,}")
+        print(f"   Loyalty Points: {final_state.get('loyalty_points', 0)}")
+    
+    if final_state.get('recommendations'):
+        print(f"\n🎯 PRODUCTS RECOMMENDED: {len(final_state['recommendations'])}")
+        for idx, item in enumerate(final_state['recommendations'][:3], 1):
+            print(f"   {idx}. {item['name']} - ₹{item['price']:,}")
     
     print("\n" + "=" * 70)
-    print("✅ Demo completed!")
+    print("✅ Demo completed successfully!")
     print("=" * 70)
