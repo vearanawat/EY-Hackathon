@@ -1,0 +1,34 @@
+# Core LangGraph and LangChain dependencies
+langgraph>=0.0.20
+langchain>=0.1.0
+langchain-core>=0.1.0
+
+# LLM Options (choose one or install all)
+# Default: Google Gemini (FREE - Recommended)
+google-generativeai>=0.3.0
+langchain-google-genai>=0.0.5
+
+# Alternative 1: OpenAI (paid, but high quality)
+langchain-openai>=0.0.5
+
+# Alternative 2: Groq (FREE - Fastest)
+# groq>=0.4.0
+# langchain-groq>=0.0.1
+
+# Alternative 3: Hugging Face (FREE - Many models)
+# huggingface-hub>=0.20.0
+# langchain-huggingface>=0.0.1
+
+# Web framework for mock API
+flask>=3.0.0
+flask-cors>=4.0.0
+
+# HTTP requests
+requests>=2.31.0
+
+# Data handling
+python-dotenv>=1.0.0
+
+# Optional but recommended
+pydantic>=2.0.0
+typing-extensions>=4.8.0

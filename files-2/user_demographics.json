@@ -1,0 +1,266 @@
+{
+  "users": [
+    {
+      "user_id": "C001",
+      "name": "Priya Sharma",
+      "age": 28,
+      "gender": "Female",
+      "location": "Mumbai, Maharashtra",
+      "income_bracket": "₹8-12 LPA",
+      "lifestyle": "Fitness enthusiast, works in tech",
+      "preferences": ["activewear", "running shoes", "yoga mats", "fitness trackers"],
+      "past_purchases": ["Nike Air Zoom", "Lululemon Leggings", "Fitbit Charge"],
+      "loyalty_tier": "Gold",
+      "loyalty_points": 2500,
+      "avg_order_value": 4500,
+      "purchase_frequency": "Monthly",
+      "key_traits": [
+        "Health-conscious",
+        "Brand-loyal",
+        "Prefers premium activewear",
+        "Early morning shopper"
+      ]
+    },
+    {
+      "user_id": "C002",
+      "name": "Rajesh Kumar",
+      "age": 42,
+      "gender": "Male",
+      "location": "Bangalore, Karnataka",
+      "income_bracket": "₹15-25 LPA",
+      "lifestyle": "Business professional, frequent traveler",
+      "preferences": ["formal wear", "business laptops", "travel accessories", "luxury watches"],
+      "past_purchases": ["Dell XPS 15", "Samsonite Luggage", "Raymond Suit"],
+      "loyalty_tier": "Platinum",
+      "loyalty_points": 8750,
+      "avg_order_value": 12000,
+      "purchase_frequency": "Bi-monthly",
+      "key_traits": [
+        "Values quality over price",
+        "Time-sensitive",
+        "Prefers express delivery",
+        "Corporate decision-maker"
+      ]
+    },
+    {
+      "user_id": "C003",
+      "name": "Ananya Iyer",
+      "age": 22,
+      "gender": "Female",
+      "location": "Chennai, Tamil Nadu",
+      "income_bracket": "₹3-5 LPA",
+      "lifestyle": "College student, fashion blogger",
+      "preferences": ["trendy fashion", "accessories", "cosmetics", "phone cases"],
+      "past_purchases": ["H&M Dress", "MAC Lipstick", "iPhone Cover"],
+      "loyalty_tier": "Silver",
+      "loyalty_points": 450,
+      "avg_order_value": 1800,
+      "purchase_frequency": "Weekly",
+      "key_traits": [
+        "Price-sensitive",
+        "Trend-focused",
+        "Social media influencer",
+        "Impulsive buyer"
+      ]
+    },
+    {
+      "user_id": "C004",
+      "name": "Mohammed Zubair",
+      "age": 35,
+      "gender": "Male",
+      "location": "Hyderabad, Telangana",
+      "income_bracket": "₹10-15 LPA",
+      "lifestyle": "Software engineer, gamer, tech enthusiast",
+      "preferences": ["gaming laptops", "mechanical keyboards", "gaming chairs", "VR headsets"],
+      "past_purchases": ["ROG Strix Gaming Laptop", "Razer Mouse", "SteelSeries Headset"],
+      "loyalty_tier": "Gold",
+      "loyalty_points": 4200,
+      "avg_order_value": 8500,
+      "purchase_frequency": "Quarterly",
+      "key_traits": [
+        "Research-driven",
+        "Spec-focused",
+        "Prefers technical details",
+        "Night owl shopper"
+      ]
+    },
+    {
+      "user_id": "C005",
+      "name": "Sneha Desai",
+      "age": 31,
+      "gender": "Female",
+      "location": "Pune, Maharashtra",
+      "income_bracket": "₹7-10 LPA",
+      "lifestyle": "Working mom, home decor enthusiast",
+      "preferences": ["home decor", "kitchen appliances", "kids toys", "books"],
+      "past_purchases": ["Philips Air Fryer", "IKEA Furniture", "Melissa & Doug Toys"],
+      "loyalty_tier": "Gold",
+      "loyalty_points": 3100,
+      "avg_order_value": 5500,
+      "purchase_frequency": "Monthly",
+      "key_traits": [
+        "Practical buyer",
+        "Value-conscious",
+        "Prefers family-oriented products",
+        "Weekend shopper"
+      ]
+    },
+    {
+      "user_id": "C006",
+      "name": "Arjun Patel",
+      "age": 26,
+      "gender": "Male",
+      "location": "Ahmedabad, Gujarat",
+      "income_bracket": "₹5-8 LPA",
+      "lifestyle": "Startup employee, music lover",
+      "preferences": ["audio equipment", "vinyl records", "casual wear", "smart home devices"],
+      "past_purchases": ["Sony WH-1000XM5", "Echo Dot", "Levi's Jeans"],
+      "loyalty_tier": "Silver",
+      "loyalty_points": 1800,
+      "avg_order_value": 3200,
+      "purchase_frequency": "Bi-monthly",
+      "key_traits": [
+        "Audiophile",
+        "Eco-conscious",
+        "Prefers sustainable brands",
+        "Evening shopper"
+      ]
+    },
+    {
+      "user_id": "C007",
+      "name": "Lakshmi Menon",
+      "age": 55,
+      "gender": "Female",
+      "location": "Kochi, Kerala",
+      "income_bracket": "₹12-18 LPA",
+      "lifestyle": "Senior executive, health conscious",
+      "preferences": ["organic products", "health supplements", "traditional wear", "gardening tools"],
+      "past_purchases": ["Organic India Supplements", "Silk Saree", "Gardening Kit"],
+      "loyalty_tier": "Platinum",
+      "loyalty_points": 6500,
+      "avg_order_value": 7000,
+      "purchase_frequency": "Monthly",
+      "key_traits": [
+        "Health-focused",
+        "Quality-oriented",
+        "Traditional values",
+        "Morning shopper"
+      ]
+    },
+    {
+      "user_id": "C008",
+      "name": "Vikram Singh",
+      "age": 38,
+      "gender": "Male",
+      "location": "Delhi NCR",
+      "income_bracket": "₹20-30 LPA",
+      "lifestyle": "Investment banker, luxury enthusiast",
+      "preferences": ["luxury fashion", "premium electronics", "fine watches", "imported spirits"],
+      "past_purchases": ["Tag Heuer Watch", "Apple MacBook Pro", "Gucci Belt"],
+      "loyalty_tier": "Diamond",
+      "loyalty_points": 15000,
+      "avg_order_value": 25000,
+      "purchase_frequency": "Monthly",
+      "key_traits": [
+        "Premium-only",
+        "Brand-conscious",
+        "Status-driven",
+        "Any-time shopper"
+      ]
+    },
+    {
+      "user_id": "C009",
+      "name": "Riya Verma",
+      "age": 19,
+      "gender": "Female",
+      "location": "Jaipur, Rajasthan",
+      "income_bracket": "₹0-3 LPA",
+      "lifestyle": "First-year college student, budget shopper",
+      "preferences": ["stationery", "budget fashion", "mobile accessories", "snacks"],
+      "past_purchases": ["Notebook Set", "Basic T-Shirts", "Phone Charger"],
+      "loyalty_tier": "Bronze",
+      "loyalty_points": 150,
+      "avg_order_value": 800,
+      "purchase_frequency": "Monthly",
+      "key_traits": [
+        "Budget-conscious",
+        "Discount-hunter",
+        "Prefers free shipping",
+        "Late night shopper"
+      ]
+    },
+    {
+      "user_id": "C010",
+      "name": "Karthik Reddy",
+      "age": 45,
+      "gender": "Male",
+      "location": "Visakhapatnam, Andhra Pradesh",
+      "income_bracket": "₹18-25 LPA",
+      "lifestyle": "Doctor, fitness and wellness advocate",
+      "preferences": ["medical equipment", "fitness gear", "nutritional supplements", "books"],
+      "past_purchases": ["Blood Pressure Monitor", "Treadmill", "Whey Protein"],
+      "loyalty_tier": "Platinum",
+      "loyalty_points": 7200,
+      "avg_order_value": 9500,
+      "purchase_frequency": "Bi-monthly",
+      "key_traits": [
+        "Health professional",
+        "Evidence-based buyer",
+        "Prefers certified products",
+        "Afternoon shopper"
+      ]
+    }
+  ],
+  "summary_statistics": {
+    "total_users": 10,
+    "age_range": "19-55 years",
+    "gender_distribution": {
+      "Male": 6,
+      "Female": 4
+    },
+    "location_coverage": [
+      "Mumbai",
+      "Bangalore",
+      "Chennai",
+      "Hyderabad",
+      "Pune",
+      "Ahmedabad",
+      "Kochi",
+      "Delhi NCR",
+      "Jaipur",
+      "Visakhapatnam"
+    ],
+    "income_brackets": [
+      "₹0-3 LPA (Budget)",
+      "₹3-5 LPA (Entry)",
+      "₹5-8 LPA (Lower-Middle)",
+      "₹7-12 LPA (Middle)",
+      "₹10-18 LPA (Upper-Middle)",
+      "₹15-25 LPA (Affluent)",
+      "₹20-30 LPA (Premium)"
+    ],
+    "loyalty_tiers": {
+      "Bronze": 1,
+      "Silver": 2,
+      "Gold": 3,
+      "Platinum": 3,
+      "Diamond": 1
+    },
+    "avg_order_value_range": "₹800 - ₹25,000",
+    "purchase_frequency": {
+      "Weekly": 1,
+      "Monthly": 5,
+      "Bi-monthly": 3,
+      "Quarterly": 1
+    }
+  },
+  "use_cases": {
+    "fitness_shopping": ["C001", "C010"],
+    "business_professional": ["C002", "C007"],
+    "tech_enthusiast": ["C004"],
+    "family_shopping": ["C005"],
+    "budget_conscious": ["C003", "C009"],
+    "luxury_segment": ["C008"],
+    "lifestyle_hobbies": ["C006"]
+  }
+}
