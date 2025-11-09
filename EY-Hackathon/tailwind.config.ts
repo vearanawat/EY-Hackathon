@@ -72,6 +72,8 @@ export default {
       fontFamily: {
         unbounded: ["Unbounded", "sans-serif"],
         helvetica: ["Helvetica", "Arial", "sans-serif"],
+        sans: ["Inter", "Poppins", "system-ui", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
