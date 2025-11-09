@@ -8,6 +8,11 @@ from langchain_core.messages import HumanMessage, AIMessage
 from datetime import datetime
 import sys
 import os
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Color codes for terminal
 class Colors:

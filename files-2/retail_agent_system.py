@@ -77,7 +77,7 @@ def sales_agent_node(state: AgentState) -> AgentState:
     """
     
     llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
+        model="gemini-2.5-flash",
         temperature=0,
         google_api_key=os.getenv("GOOGLE_API_KEY")
     )
