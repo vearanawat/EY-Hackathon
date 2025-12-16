@@ -69,24 +69,6 @@ Create an Agentic AI solution where a Sales Agent:
 
 ---
 
-## 🗂️ Project Structure
-
-```
-retail-agent-system/
-│
-├── retail_agent_system.py      # Main LangGraph agent system
-├── mock_api_server.py           # Mock backend APIs with dummy data
-├── interactive_chat.py          # CLI chatbot interface
-├── requirements.txt             # Python dependencies
-├── README.md                    # This file
-│
-└── data/
-    ├── users.json               # 10 diverse user profiles (auto-generated)
-    ├── products.json            # Product catalog (auto-generated)
-    └── conversation_logs/       # Conversation history (auto-created)
-```
-
----
 
 ## 📋 Prerequisites
 
@@ -243,44 +225,7 @@ def sales_agent_node(state: AgentState) -> AgentState:
 
 ---
 
-## 🧪 Testing
 
-### Test Individual Agents
-
-```python
-from retail_agent_system import create_retail_agent_graph
-
-app = create_retail_agent_graph()
-
-# Test with different user profiles
-test_state = {
-    "user_id": "C002",  # Try C001-C010
-    "messages": [HumanMessage(content="Show me business laptops")],
-    # ... other state fields
-}
-
-result = app.invoke(test_state)
-```
-
-### Test API Endpoints
-
-```bash
-# Health check
-curl http://localhost:5000/api/health
-
-# Get recommendations
-curl http://localhost:5000/api/recommendations/C001
-
-# Check inventory
-curl http://localhost:5000/api/inventory/SKU001
-
-# Process payment
-curl -X POST http://localhost:5000/api/payment \
-  -H "Content-Type: application/json" \
-  -d '{"user_id":"C001","amount":10995,"items":["SKU001"]}'
-```
-
----
 
 ## 📊 Key Metrics Tracked
 
@@ -318,86 +263,7 @@ curl -X POST http://localhost:5000/api/payment \
 
 ---
 
-## 🚧 Roadmap / Next Steps
 
-- [ ] Add Redis for session persistence
-- [ ] Implement RAG for product search from descriptions
-- [ ] Add voice interface using Whisper + TTS
-- [ ] Multi-language support (Hindi, Tamil, etc.)
-- [ ] Real-time analytics dashboard
-- [ ] A/B testing framework for agent prompts
-- [ ] Integration with actual payment gateways
-- [ ] WhatsApp Business API integration
 
----
 
-## 📝 Demo Script (4-minute walkthrough)
 
-### Minute 1: Introduction
-- Show system architecture diagram
-- Explain agent roles and orchestration
-
-### Minute 2: Scenario 1 - Web to Mobile
-- Customer starts on web: "I want running shoes"
-- Shows recommendations based on profile
-- Customer switches to mobile app (maintain context)
-- Complete purchase with loyalty rewards
-
-### Minute 3: Scenario 2 - In-store Kiosk
-- Customer walks into store, uses kiosk
-- Agent recognizes returning customer
-- Shows personalized recommendations
-- Reserve item for try-on
-
-### Minute 4: Post-Purchase
-- Order tracking link sent
-- Feedback request
-- Show how agent handles returns query
-- Highlight seamless omnichannel experience
-
----
-
-## 🤝 Contributing
-
-This is a hackathon submission, but feel free to:
-1. Fork the repository
-2. Create feature branches
-3. Submit pull requests
-4. Report issues
-
----
-
-## 📄 License
-
-MIT License - Feel free to use for learning and hackathons!
-
----
-
-## 🙏 Acknowledgments
-
-- **LangGraph** by LangChain for agent orchestration
-- **OpenAI** for GPT-4o-mini
-- **Flask** for mock API server
-- **EY Techathon 6.0** for the problem statement
-
----
-
-## 📧 Contact
-
-For questions or demo requests:
-- **Email**: your-email@example.com
-- **LinkedIn**: [Your Profile]
-- **GitHub**: [Your Repo]
-
----
-
-## 🎉 Good Luck!
-
-Remember: The key to winning is showing **seamless orchestration**, **intelligent routing**, and **personalized experiences** across channels. Focus on the demo flow and make it conversational!
-
-**Pro Tips for Demo:**
-1. Use real customer names and scenarios
-2. Show error handling (e.g., out-of-stock)
-3. Highlight loyalty benefits and AOV increase
-4. Demonstrate channel switching smoothly
-5. End with metrics: "Increased AOV by 35%!"
